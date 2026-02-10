@@ -1,6 +1,6 @@
 import { execSync } from "node:child_process";
 
-const APP_ID = "com.clawdbot.iptv";
+const APP_ID = "com.tv.optimize";
 
 /**
  * Install and launch the .ipk on a connected webOS TV.

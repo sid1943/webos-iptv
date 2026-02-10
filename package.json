@@ -1,9 +1,9 @@
 {
-  "name": "webos-iptv",
+  "name": "optimize-webos",
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "IPTV client for LG OLED77B5PUA (webOS 25) — Indian channels + world sports",
+  "description": "Optimize — M3U player for LG webOS TVs (user-provided playlists)",
   "scripts": {
     "setup": "bun run scripts/setup-tv.ts",
     "build": "bun run src/build/bundler.ts",

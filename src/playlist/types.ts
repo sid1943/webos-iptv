@@ -1,4 +1,4 @@
-/** A single IPTV channel parsed from an M3U playlist. */
+/** A single channel parsed from an M3U playlist. */
 export type IptvChannel = {
   /** 1-based index within the playlist. */
   index: number;

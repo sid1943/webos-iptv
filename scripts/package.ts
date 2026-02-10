@@ -2,7 +2,7 @@
 import { bundleWebOSApp } from "../src/build/bundler.js";
 import { packageWebOSApp } from "../src/build/packager.js";
 
-console.log("Building webOS IPTV app...");
+console.log("Building Optimize app...");
 const dist = await bundleWebOSApp();
 console.log(`Built to: ${dist}`);
 

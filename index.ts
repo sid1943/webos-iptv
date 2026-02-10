@@ -1,15 +1,14 @@
 /**
- * Clawdbot IPTV — Standalone webOS TV app
- * Target: LG OLED77B5PUA (webOS 25)
+ * Optimize — Standalone webOS TV app
  *
- * This is NOT a clawdbot extension. It's a standalone app under apps/webos-iptv/.
+ * This is a standalone app under apps/webos-iptv/.
  * Use the scripts in package.json to build, package, and deploy:
  *
- *   pnpm build     — bundle the app for webOS
- *   pnpm package   — create .ipk installer
- *   pnpm deploy    — install and launch on TV
- *   pnpm dev       — build + package + deploy + inspect
- *   pnpm test      — run unit tests
+ *   bun run build  — bundle the app for webOS
+ *   bun run package— create .ipk installer
+ *   bun run deploy — install and launch on TV
+ *   bun run dev    — build + package + deploy + inspect
+ *   bun test       — run unit tests
  */
 
 export { parseM3u } from "./src/playlist/parser.js";

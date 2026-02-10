@@ -1,19 +1,19 @@
 /**
- * Clawdbot IPTV — Main application entry point.
- * LG webOS TV app for Indian channels + world sports.
+ * Optimize — Main application entry point.
+ * LG webOS TV app for user-provided playlists.
  */
 
-import type { IptvChannel, IptvPlaylist } from "../src/playlist/types.js";
-import { PlayerController } from "./player/player-controller.js";
+import type { IptvChannel, IptvPlaylist } from "../../src/playlist/types.ts";
+import { PlayerController } from "./player/player-controller.ts";
 import {
   initNavigation,
   initSpatialNavigation,
   setAppState,
   type NavigationCallbacks,
-} from "./navigation.js";
-import { checkNetwork, platformBack } from "./webos-api.js";
-import { loadSettings, saveSettings, getSettings, showSettings, hideSettings } from "./ui/settings-panel.js";
-import { showInfoBar, hideInfoBar } from "./ui/info-bar.js";
+} from "./navigation.ts";
+import { checkNetwork, platformBack } from "./webos-api.ts";
+import { loadSettings, showSettings, hideSettings } from "./ui/settings-panel.ts";
+import { showInfoBar, hideInfoBar } from "./ui/info-bar.ts";
 import {
   initChannelList,
   showChannelList,
@@ -24,29 +24,48 @@ import {
   setFocusedToChannel,
   updateFavorites,
   updateChannelNowPlaying,
-} from "./ui/channel-list.js";
-import { showEpg, hideEpg, renderEpg } from "./ui/epg-grid.js";
+} from "./ui/channel-list.ts";
+import { showEpg, hideEpg, renderEpg } from "./ui/epg-grid.ts";
 import {
   showNumberInput,
   hideNumberInput,
   getEnteredNumber,
   updateNumberPreview,
-} from "./ui/number-input.js";
-import { showToast } from "./ui/toast.js";
-import { loadPlaylists } from "./data/playlist-manager.js";
-import { loadEpg, getEpgStore, startEpgRefresh } from "./data/epg-manager.js";
-import { loadFavorites, toggleFavorite, getFavorites } from "./data/favorites.js";
+} from "./ui/number-input.ts";
+import { showToast } from "./ui/toast.ts";
+import { loadPlaylists } from "./data/playlist-manager.ts";
+import { loadEpg, getEpgStore, startEpgRefresh } from "./data/epg-manager.ts";
+import { loadFavorites, toggleFavorite, getFavorites } from "./data/favorites.ts";
 import {
   loadHistory,
   recordChannel,
   getLastChannel,
   getPreviousChannel,
-} from "./data/channel-history.js";
+} from "./data/channel-history.ts";
 
 // --- App State ---
 let player: PlayerController;
 let playlist: IptvPlaylist = { channels: [], groups: [], attributes: {} };
 let currentChannel: IptvChannel | null = null;
+
+function clickFocusedElement(): void {
+  const el = document.activeElement as HTMLElement | null;
+  if (el && typeof el.click === "function") el.click();
+}
+
+function focusSettings(): void {
+  const SN = (window as unknown as Record<string, unknown>).SpatialNavigation as
+    | { focus(section?: string): void }
+    | undefined;
+  if (SN?.focus) {
+    SN.focus("settings");
+  } else {
+    const first = document.querySelector("#settings-panel .focusable") as
+      | HTMLElement
+      | null;
+    first?.focus();
+  }
+}
 
 // --- Initialization ---
 async function init(): Promise<void> {
@@ -95,8 +114,14 @@ async function init(): Promise<void> {
     );
 
     if (playlist.channels.length === 0) {
-      showLoading("No channels found. Press Blue for settings.");
+      showLoading("No channels found. Opening settings...");
       setAppState("viewing");
+      // Always open settings when there are no channels (first-run or after removal).
+      setTimeout(() => {
+        setAppState("settings");
+        showSettings();
+        hideLoading();
+      }, 0);
       return;
     }
 
@@ -177,7 +202,6 @@ function tuneToChannel(channel: IptvChannel): void {
   const upNext = tvgId ? store.getUpNext(tvgId) : undefined;
   showInfoBar(channel, nowPlaying, upNext);
 
-  // Play stream
   player.play(channel.url);
 }
 
@@ -230,6 +254,7 @@ function createNavigationCallbacks(): NavigationCallbacks {
     onShowSettings: () => {
       setAppState("settings");
       showSettings();
+      setTimeout(() => focusSettings(), 0);
     },
     onHideSettings: () => {
       setAppState("viewing");
@@ -301,7 +326,7 @@ function createNavigationCallbacks(): NavigationCallbacks {
       // Handled by spatial navigation
     },
     onSettingsSelect: () => {
-      // Handled by spatial navigation click handlers
+      clickFocusedElement();
     },
 
     onShowInfo: () => {

@@ -1,3 +1,7 @@
 node_modules/
 dist/
 *.ipk
+.DS_Store
+.vendor/
+store/submission-pack.zip
+store/test-ipk.zip

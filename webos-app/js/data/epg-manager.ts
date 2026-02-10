@@ -1,6 +1,6 @@
-import { parseXmltv } from "../../src/epg/xmltv-parser.js";
-import { EpgStore } from "../../src/epg/epg-store.js";
-import type { PlaylistConfig } from "../ui/settings-panel.js";
+import { parseXmltv } from "../../../src/epg/xmltv-parser.ts";
+import { EpgStore } from "../../../src/epg/epg-store.ts";
+import type { PlaylistConfig } from "../ui/settings-panel.ts";
 
 const epgStore = new EpgStore();
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
@@ -21,7 +21,7 @@ export async function loadEpg(configs: PlaylistConfig[]): Promise<EpgStore> {
   const results = await Promise.allSettled(
     epgUrls.map(async (url) => {
       const res = await fetch(url, {
-        headers: { "User-Agent": "ClawdbotIPTV/1.0" },
+        headers: { "User-Agent": "Optimize/1.0" },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 

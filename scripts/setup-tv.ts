@@ -5,7 +5,7 @@
  * 2. Connect via SSAP and pair
  * 3. Enable Developer Mode
  * 4. Register device with ares tools
- * 5. Build and deploy the IPTV app
+ * 5. Build and deploy the app
  *
  * Usage: bun run scripts/setup-tv.ts [tv-ip]
  */
@@ -84,7 +84,7 @@ async function main() {
   info(result.message);
 
   // ── Step 3: Build ─────────────────────────────────────────
-  step(3, TOTAL, "Building IPTV app");
+  step(3, TOTAL, "Building app");
   info("Bundling webOS app...");
   const dist = await bundleWebOSApp();
   info(`Built to: ${dist}`);
@@ -107,7 +107,7 @@ async function main() {
   try {
     deployToTV(ipk, DEVICE_NAME);
     console.log(`
-  ${GREEN}${BOLD}Done! IPTV app is running on your LG TV.${RESET}
+  ${GREEN}${BOLD}Done! App is running on your LG TV.${RESET}
 
   ${BOLD}Remote control:${RESET}
     OK          Open channel list

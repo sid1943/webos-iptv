@@ -1,4 +1,4 @@
-import { Key, isNumberKey, keyToDigit } from "./keycodes.js";
+import { Key, isNumberKey, keyToDigit } from "./keycodes.ts";
 
 /**
  * Application states for the key handler state machine.

@@ -31,7 +31,7 @@ const HANDSHAKE_PAYLOAD = {
         created: "20250101000000",
         appId: "com.clawdbot.iptv.remote",
         vendorId: "com.clawdbot",
-        localizedAppNames: { "": "Clawdbot IPTV Setup" },
+        localizedAppNames: { "": "Optimize Setup" },
       },
       permissions: [
         "LAUNCH",

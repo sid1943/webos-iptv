@@ -1,6 +1,6 @@
-# webOS IPTV
+# Optimize
 
-IPTV client for **LG OLED77B5PUA** (webOS 25). Indian channels + world sports.
+M3U player for LG webOS TVs. Playlists are user-provided.
 
 ## One-Command Setup (Mac Mini)
 
@@ -16,7 +16,7 @@ That single command does everything:
 4. **Enables Developer Mode** automatically
 5. Registers the TV and fetches SSH keys
 6. **Builds, packages, and deploys** the app
-7. **Launches** the IPTV app on the TV
+7. **Launches** the app on the TV
 
 No manual TV menu navigation needed. Just accept the one-time pairing prompt.
 
@@ -57,9 +57,6 @@ bun run scripts/dev.ts <device>      # Deploy + open debugger
 bun test                             # Run tests
 ```
 
-## Default Channels
+## Playlists
 
-- **Indian Channels** — iptv-org/iptv (countries/in)
-- **World Sports** — iptv-org/iptv (categories/sports)
-
-Add more playlists in the Settings panel (Blue button on remote).
+No playlists are bundled. Add your own M3U/M3U8 playlists in the Settings panel (Blue button on remote).

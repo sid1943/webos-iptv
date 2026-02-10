@@ -19,7 +19,7 @@ error() { echo -e "${RED}✗${RESET} $1"; exit 1; }
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo -e "\n${BOLD}webOS IPTV — Automated Setup${RESET}\n"
+echo -e "\n${BOLD}Optimize — Automated Setup${RESET}\n"
 
 # ─── Prerequisites ───────────────────────────────────────────
 info "Checking prerequisites..."

@@ -8,7 +8,7 @@ export function getWebOSShakaConfig(): Record<string, unknown> {
       // webOS stall handling — don't skip on stall, let the buffer recover
       stallEnabled: true,
       stallSkip: 0,
-      // Buffer goals tuned for live IPTV
+      // Buffer goals tuned for live streams
       bufferingGoal: 30,
       rebufferingGoal: 5,
       bufferBehind: 30,

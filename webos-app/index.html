@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1920, initial-scale=1.0" />
-  <title>Clawdbot IPTV</title>
+  <title>Optimize</title>
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/player.css" />
   <link rel="stylesheet" href="css/channel-list.css" />
@@ -80,6 +80,27 @@
         <!-- Populated dynamically -->
       </div>
     </div>
+    <div id="playlist-modal" class="overlay hidden">
+      <div class="playlist-modal-card">
+        <div class="playlist-modal-title">Add Playlist</div>
+        <div class="playlist-modal-field">
+          <label for="playlist-name">Name</label>
+          <input id="playlist-name" class="settings-input focusable" type="text" placeholder="My Playlist" />
+        </div>
+        <div class="playlist-modal-field">
+          <label for="playlist-url">Playlist URL (M3U/M3U8)</label>
+          <input id="playlist-url" class="settings-input focusable" type="text" placeholder="https://example.com/playlist.m3u8" />
+        </div>
+        <div class="playlist-modal-field">
+          <label for="playlist-epg">EPG URL (optional)</label>
+          <input id="playlist-epg" class="settings-input focusable" type="text" placeholder="https://example.com/epg.xml" />
+        </div>
+        <div class="playlist-modal-actions">
+          <button id="playlist-cancel" class="settings-btn focusable" data-action="cancel-playlist">Cancel</button>
+          <button id="playlist-save" class="settings-btn focusable" data-action="save-playlist">Save</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Toast notifications -->
@@ -97,6 +118,6 @@
   <script src="lib/spatial-navigation.js"></script>
 
   <!-- App bundle -->
-  <script type="module" src="js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

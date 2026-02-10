@@ -1,8 +1,8 @@
-import { parseM3u } from "../../src/playlist/parser.js";
-import { mergePlaylists } from "../../src/playlist/fetcher.js";
-import type { IptvChannel, IptvPlaylist } from "../../src/playlist/types.js";
-import type { PlaylistConfig } from "../ui/settings-panel.js";
-import { storageGetWithTtl, storageSetWithTtl } from "../storage.js";
+import { parseM3u } from "../../../src/playlist/parser.ts";
+import { mergePlaylists } from "../../../src/playlist/fetcher.ts";
+import type { IptvChannel, IptvPlaylist } from "../../../src/playlist/types.ts";
+import type { PlaylistConfig } from "../ui/settings-panel.ts";
+import { storageGetWithTtl, storageSetWithTtl } from "../storage.ts";
 
 const CACHE_KEY = "playlist_cache";
 
@@ -39,7 +39,7 @@ async function fetchAndCachePlaylists(
   const results = await Promise.allSettled(
     configs.map(async (config) => {
       const res = await fetch(config.url, {
-        headers: { "User-Agent": "ClawdbotIPTV/1.0" },
+        headers: { "User-Agent": "Optimize/1.0" },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const text = await res.text();

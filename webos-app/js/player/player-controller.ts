@@ -1,5 +1,5 @@
-import { detectStreamType, needsShaka } from "./stream-detector.js";
-import { getWebOSShakaConfig } from "./shaka-config.js";
+import { detectStreamType, needsShaka } from "./stream-detector.ts";
+import { getWebOSShakaConfig } from "./shaka-config.ts";
 
 declare const shaka: {
   Player: new (video: HTMLVideoElement) => ShakaPlayer;

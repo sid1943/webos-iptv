@@ -4,7 +4,7 @@ import type { IptvPlaylist } from "./types.js";
 /** Fetch and parse an M3U playlist from a URL. */
 export async function fetchPlaylist(url: string): Promise<IptvPlaylist> {
   const res = await fetch(url, {
-    headers: { "User-Agent": "ClawdbotIPTV/1.0" },
+    headers: { "User-Agent": "Optimize/1.0" },
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch playlist: ${res.status} ${res.statusText}`);

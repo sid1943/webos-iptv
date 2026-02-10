@@ -1,6 +1,6 @@
-import type { IptvChannel } from "../../src/playlist/types.js";
-import type { EpgProgramme } from "../../src/epg/types.js";
-import type { EpgStore } from "../../src/epg/epg-store.js";
+import type { IptvChannel } from "../../../src/playlist/types.ts";
+import type { EpgProgramme } from "../../../src/epg/types.ts";
+import type { EpgStore } from "../../../src/epg/epg-store.ts";
 
 const SLOT_WIDTH = 280; // px per 30min slot
 const ROW_HEIGHT = 80;

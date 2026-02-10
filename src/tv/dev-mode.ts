@@ -47,7 +47,7 @@ export async function enableDevMode(
   }
 
   try {
-    await showToast(tv, "Clawdbot IPTV setup connected").catch(() => {});
+    await showToast(tv, "Optimize setup connected").catch(() => {});
 
     // Check if Developer Mode app is installed
     console.log("  Checking for Developer Mode app...");

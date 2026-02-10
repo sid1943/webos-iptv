@@ -1,4 +1,4 @@
-import { storageGet, storageSet } from "../storage.js";
+import { storageGet, storageSet } from "../storage.ts";
 
 const STORAGE_KEY = "channel_history";
 const MAX_HISTORY = 20;

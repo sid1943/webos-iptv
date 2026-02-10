@@ -1,21 +1,21 @@
 /* OLED-optimized dark theme — true black background minimizes burn-in */
 
 :root {
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-panel: rgba(10, 10, 10, 0.92);
-  --bg-hover: rgba(255, 255, 255, 0.08);
-  --bg-focus: rgba(255, 165, 0, 0.15);
-  --text-primary: #f0f0f0;
-  --text-secondary: #888888;
-  --text-muted: #555555;
-  --accent: #ff8c00;
-  --accent-bright: #ffa500;
-  --accent-dim: #cc7000;
-  --success: #4caf50;
-  --error: #f44336;
-  --border: rgba(255, 255, 255, 0.1);
-  --focus-ring: #ff8c00;
+  --bg-primary: #06080d;
+  --bg-secondary: #0b111b;
+  --bg-panel: rgba(12, 17, 28, 0.92);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-focus: rgba(43, 210, 197, 0.18);
+  --text-primary: #e9f1f7;
+  --text-secondary: #9aa6b2;
+  --text-muted: #66727d;
+  --accent: #2bd2c5;
+  --accent-bright: #7df5e6;
+  --accent-dim: #1aa99e;
+  --success: #3ddc84;
+  --error: #ff5d5d;
+  --border: rgba(255, 255, 255, 0.08);
+  --focus-ring: #2bd2c5;
   --font-family: "LG Smart UI", "Helvetica Neue", Arial, sans-serif;
   --radius: 8px;
   --transition: 200ms ease;

@@ -11,7 +11,7 @@ export function detectStreamType(url: string): StreamType {
   if (path.endsWith(".ts")) return "ts";
   if (path.endsWith(".mp4") || path.endsWith(".mkv")) return "mp4";
 
-  // Check query params for format hints (common in IPTV providers)
+  // Check query params for format hints (common in playlist providers)
   const params = new URL(url).searchParams;
   const output = params.get("output") || params.get("type") || "";
   if (output.includes("m3u8") || output.includes("hls")) return "hls";

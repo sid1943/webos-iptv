@@ -1,5 +1,5 @@
-import type { IptvChannel } from "../../src/playlist/types.js";
-import type { EpgProgramme } from "../../src/epg/types.js";
+import type { IptvChannel } from "../../../src/playlist/types.ts";
+import type { EpgProgramme } from "../../../src/epg/types.ts";
 
 let hideTimeout: ReturnType<typeof setTimeout> | null = null;
 

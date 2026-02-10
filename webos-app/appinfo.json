@@ -1,10 +1,10 @@
 {
-  "id": "com.clawdbot.iptv",
+  "id": "com.tv.optimize",
   "version": "1.0.0",
-  "vendor": "Clawdbot",
+  "vendor": "Optimize",
   "type": "web",
   "main": "index.html",
-  "title": "Clawdbot IPTV",
+  "title": "Optimize",
   "icon": "icon.png",
   "largeIcon": "largeIcon.png",
   "splashBackground": "splash.png",

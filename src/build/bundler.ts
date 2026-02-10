@@ -1,5 +1,6 @@
 import { resolve, join } from "node:path";
 import { cpSync, mkdirSync, existsSync } from "node:fs";
+import { build } from "esbuild";
 
 const EXTENSION_ROOT = resolve(import.meta.dirname, "../..");
 const WEBOS_APP_SRC = join(EXTENSION_ROOT, "webos-app");
@@ -38,31 +39,19 @@ export async function bundleWebOSApp(outDir?: string): Promise<string> {
     }
   }
 
-  // Bundle TypeScript with rolldown (or just copy for now)
-  // In production, use rolldown to bundle webos-app/js/app.ts → dist/webos-app/js/app.js
+  // Bundle TypeScript for the webOS app (IIFE for ares-package minifier compatibility)
   const jsSrc = join(WEBOS_APP_SRC, "js");
   if (existsSync(jsSrc)) {
     mkdirSync(join(dist, "js"), { recursive: true });
 
-    try {
-      const { rolldown } = await import("rolldown");
-      const bundle = await rolldown({
-        input: join(jsSrc, "app.ts"),
-        resolve: {
-          extensions: [".ts", ".js"],
-        },
-      });
-      await bundle.write({
-        dir: join(dist, "js"),
-        format: "esm",
-        entryFileNames: "app.js",
-      });
-      await bundle.close();
-    } catch {
-      // Fallback: copy raw TS files (for dev/debug)
-      console.warn("[bundler] rolldown not available, copying raw source");
-      cpSync(jsSrc, join(dist, "js"), { recursive: true });
-    }
+    await build({
+      entryPoints: [join(jsSrc, "app.ts")],
+      bundle: true,
+      platform: "browser",
+      format: "iife",
+      target: ["es2017"],
+      outfile: join(dist, "js", "app.js"),
+    });
   }
 
   return dist;

@@ -28,7 +28,7 @@ function parseExtinfName(line: string): string {
   return line.slice(commaIdx + 1).trim() || "Unknown";
 }
 
-/** Parse an M3U/M3U8 IPTV playlist string into structured data. */
+/** Parse an M3U/M3U8 playlist string into structured data. */
 export function parseM3u(content: string): IptvPlaylist {
   const lines = content.split(/\r?\n/);
   const channels: IptvChannel[] = [];

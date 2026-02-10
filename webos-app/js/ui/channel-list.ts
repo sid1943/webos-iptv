@@ -1,4 +1,4 @@
-import type { IptvChannel } from "../../src/playlist/types.js";
+import type { IptvChannel } from "../../../src/playlist/types.ts";
 
 let activeGroup = "all";
 let focusedIndex = 0;

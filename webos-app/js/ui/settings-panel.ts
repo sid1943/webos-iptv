@@ -1,4 +1,4 @@
-import { storageGet, storageSet } from "../storage.js";
+import { storageGet, storageSet } from "../storage.ts";
 
 export type PlaylistConfig = {
   name: string;
@@ -13,24 +13,22 @@ export type AppSettings = {
 };
 
 const DEFAULT_SETTINGS: AppSettings = {
-  playlists: [
-    {
-      name: "Indian Channels",
-      url: "https://iptv-org.github.io/iptv/countries/in.m3u",
-      epgUrl: "https://iptv-org.github.io/epg/guides/in/tataplay.com.epg.xml.gz",
-    },
-    {
-      name: "World Sports",
-      url: "https://iptv-org.github.io/iptv/categories/sports.m3u",
-    },
-  ],
+  playlists: [],
   refreshIntervalMinutes: 60,
 };
 
 let currentSettings: AppSettings | null = null;
+let playlistModalAutoShown = false;
 
 function $(id: string): HTMLElement | null {
   return document.getElementById(id);
+}
+
+function getSpatialNav(): { makeFocusable(): void; focus(section?: string): void } | null {
+  const SN = (window as unknown as Record<string, unknown>).SpatialNavigation as
+    | { makeFocusable(): void; focus(section?: string): void }
+    | undefined;
+  return SN || null;
 }
 
 /** Load settings from localStorage, applying defaults. */
@@ -130,6 +128,9 @@ function renderSettings(): void {
       }
     });
   }
+
+  bindPlaylistModal();
+  maybeAutoShowPlaylistModal(settings);
 }
 
 function handleSettingsAction(e: Event): void {
@@ -146,13 +147,25 @@ function handleSettingsAction(e: Event): void {
       break;
     }
     case "add-playlist": {
-      // Prompt for URL — on TV this opens the on-screen keyboard
-      const name = prompt("Playlist name:") || "Custom";
-      const url = prompt("Playlist URL (M3U/M3U8):");
+      showPlaylistModal();
+      break;
+    }
+    case "cancel-playlist": {
+      hidePlaylistModal();
+      break;
+    }
+    case "save-playlist": {
+      const nameInput = document.getElementById("playlist-name") as HTMLInputElement | null;
+      const urlInput = document.getElementById("playlist-url") as HTMLInputElement | null;
+      const epgInput = document.getElementById("playlist-epg") as HTMLInputElement | null;
+      const name = nameInput?.value?.trim() || "Custom";
+      const url = urlInput?.value?.trim() || "";
+      const epgUrl = epgInput?.value?.trim() || "";
       if (url) {
-        settings.playlists.push({ name, url });
+        settings.playlists.push({ name, url, epgUrl: epgUrl || undefined });
         saveSettings(settings);
         renderSettings();
+        hidePlaylistModal();
       }
       break;
     }
@@ -163,4 +176,57 @@ function escapeHtml(str: string): string {
   const div = document.createElement("div");
   div.textContent = str;
   return div.innerHTML;
+}
+
+function showPlaylistModal(): void {
+  const modal = $("playlist-modal");
+  if (!modal) return;
+  modal.classList.remove("hidden");
+  modal.style.display = "flex";
+  modal.style.opacity = "1";
+  modal.style.transform = "none";
+  modal.style.pointerEvents = "auto";
+  const nameInput = document.getElementById("playlist-name") as HTMLInputElement | null;
+  const urlInput = document.getElementById("playlist-url") as HTMLInputElement | null;
+  const epgInput = document.getElementById("playlist-epg") as HTMLInputElement | null;
+  if (nameInput) nameInput.value = "";
+  if (urlInput) urlInput.value = "";
+  if (epgInput) epgInput.value = "";
+  const SN = getSpatialNav();
+  if (SN) {
+    SN.makeFocusable();
+    SN.focus("settings");
+  }
+  setTimeout(() => {
+    nameInput?.focus();
+  }, 0);
+}
+
+function hidePlaylistModal(): void {
+  const modal = $("playlist-modal");
+  if (!modal) return;
+  modal.classList.add("hidden");
+}
+
+function bindPlaylistModal(): void {
+  const modal = $("playlist-modal");
+  if (!modal) return;
+  modal.querySelectorAll("[data-action]").forEach((el) => {
+    el.addEventListener("click", handleSettingsAction);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.keyCode !== 461) return; // BACK
+    const modalEl = $("playlist-modal");
+    if (!modalEl || modalEl.classList.contains("hidden")) return;
+    hidePlaylistModal();
+    e.preventDefault();
+    e.stopPropagation();
+  });
+}
+
+function maybeAutoShowPlaylistModal(settings: AppSettings): void {
+  if (playlistModalAutoShown) return;
+  if (settings.playlists.length > 0) return;
+  playlistModalAutoShown = true;
+  showPlaylistModal();
 }

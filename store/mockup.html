@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Optimize — UI Mockup</title>
+<style>
+  /* Design-Tokens 1:1 aus webos-app/css/main.css */
+  :root {
+    --bg-primary: #06080d;
+    --bg-secondary: #0b111b;
+    --bg-panel: rgba(12, 17, 28, 0.92);
+    --bg-hover: rgba(255, 255, 255, 0.06);
+    --bg-focus: rgba(43, 210, 197, 0.18);
+    --text-primary: #e9f1f7;
+    --text-secondary: #9aa6b2;
+    --text-muted: #66727d;
+    --accent: #2bd2c5;
+    --accent-bright: #7df5e6;
+    --success: #3ddc84;
+    --error: #ff5d5d;
+    --border: rgba(255, 255, 255, 0.08);
+    --focus-ring: #2bd2c5;
+    --font: "LG Smart UI", "Helvetica Neue", Arial, sans-serif;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #02040a;
+    font-family: var(--font);
+    color: var(--text-primary);
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+  .label {
+    width: 1280px;
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: -32px;
+  }
+  .label small { color: var(--text-muted); text-transform: none; font-weight: 400; margin-left: 12px; letter-spacing: 0; }
+
+  /* 1920x1080 auf 1280x720 skaliert (Faktor 2/3) für die Seite */
+  .frame {
+    width: 1280px; height: 720px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .stage {
+    width: 1920px; height: 1080px;
+    transform: scale(0.6666667); transform-origin: top left;
+    position: absolute; top: 0; left: 0;
+    background: var(--bg-primary);
+    font-size: 24px; line-height: 1.4;
+  }
+
+  /* Simuliertes Videobild */
+  .video {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(1200px 700px at 65% 35%, #15324a 0%, #0a1622 45%, #05080f 100%);
+  }
+  .video::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(420px 420px at 60% 42%, rgba(125,245,230,0.10), transparent 70%),
+      linear-gradient(115deg, transparent 40%, rgba(43,210,197,0.06) 60%, transparent 75%);
+  }
+  .live-badge {
+    position: absolute; top: 40px; left: 48px;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,0,0,0.45); padding: 8px 16px; border-radius: 6px;
+    font-size: 20px; letter-spacing: 1px; font-weight: 600;
+  }
+  .live-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--error); }
+  .clock {
+    position: absolute; top: 40px; right: 48px;
+    background: rgba(0,0,0,0.45); padding: 8px 18px; border-radius: 6px;
+    font-size: 22px; color: var(--text-secondary);
+  }
+
+  /* Info-Bar (player.css) */
+  .info-bar {
+    position: absolute; bottom: 0; left: 0; width: 1920px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.95));
+    padding: 60px 48px 32px;
+    display: flex; align-items: flex-end; gap: 24px;
+  }
+  .info-logo {
+    width: 80px; height: 80px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, #d51b1b, #7a0d0d);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 26px; color: #fff;
+  }
+  .info-content { flex: 1; min-width: 0; }
+  .info-number {
+    display: inline-block; font-size: 20px; color: var(--accent);
+    background: rgba(43,210,197,0.15); padding: 2px 12px; border-radius: 4px; margin-bottom: 4px;
+  }
+  .info-name { font-size: 36px; font-weight: bold; }
+  .info-programme { font-size: 22px; color: var(--text-secondary); margin-top: 4px; }
+  .info-label { color: var(--accent); font-weight: 600; margin-right: 8px; }
+  .info-time { color: var(--text-muted); margin-left: 12px; font-size: 20px; }
+  .info-progress { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.1); }
+  .info-progress-fill { height: 100%; width: 47%; background: var(--accent); }
+
+  /* Channel-Sidebar (channel-list.css) */
+  .sidebar {
+    position: absolute; top: 0; left: 0; width: 480px; height: 1080px;
+    background: var(--bg-panel); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; backdrop-filter: blur(2px);
+  }
+  .search { padding: 20px 24px 12px; border-bottom: 1px solid var(--border); }
+  .search input {
+    width: 100%; padding: 12px 20px; background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text-muted); font-size: 22px; font-family: var(--font);
+  }
+  .groups { display: flex; gap: 8px; padding: 12px 24px; border-bottom: 1px solid var(--border); }
+  .group-btn {
+    padding: 8px 20px; background: rgba(255,255,255,0.06); border: 1px solid transparent;
+    border-radius: 20px; color: var(--text-secondary); font-size: 18px;
+  }
+  .group-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+  .chan-list { flex: 1; overflow: hidden; padding: 8px 0; }
+  .chan {
+    display: flex; align-items: center; gap: 16px; padding: 14px 24px;
+    border-left: 3px solid transparent;
+  }
+  .chan.focus { background: var(--bg-focus); border-left-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(43,210,197,0.4); }
+  .chan-logo {
+    width: 48px; height: 48px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff;
+  }
+  .chan-info { flex: 1; min-width: 0; }
+  .chan-name { font-size: 22px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chan-now { font-size: 17px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chan-num { font-size: 18px; color: var(--text-muted); min-width: 40px; text-align: right; }
+  .chan-fav { color: var(--accent); font-size: 20px; }
+
+  /* EPG (epg-Stil nachgebaut) */
+  .epg { position: absolute; inset: 0; background: var(--bg-primary); display: flex; flex-direction: column; }
+  .epg-header { padding: 32px 48px 20px; border-bottom: 1px solid var(--border); }
+  .epg-title { font-size: 34px; font-weight: bold; margin-bottom: 18px; }
+  .epg-timeline { display: grid; grid-template-columns: 280px repeat(4, 1fr); font-size: 20px; color: var(--text-secondary); }
+  .epg-timeline div { padding-left: 12px; border-left: 1px solid var(--border); }
+  .epg-timeline div:first-child { border: none; }
+  .epg-grid { flex: 1; overflow: hidden; }
+  .epg-row { display: grid; grid-template-columns: 280px repeat(4, 1fr); border-bottom: 1px solid var(--border); height: 92px; }
+  .epg-chan { display: flex; align-items: center; gap: 14px; padding: 0 20px; background: var(--bg-secondary); }
+  .epg-chan .chan-logo { width: 40px; height: 40px; font-size: 14px; }
+  .epg-chan-name { font-size: 22px; }
+  .epg-prog { border-left: 1px solid var(--border); padding: 14px 18px; overflow: hidden; }
+  .epg-prog.now { background: var(--bg-focus); box-shadow: inset 3px 0 0 var(--accent); }
+  .epg-prog-title { font-size: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .epg-prog-time { font-size: 17px; color: var(--text-muted); margin-top: 6px; }
+
+  /* Settings */
+  .settings { position: absolute; inset: 0; background: var(--bg-primary); }
+  .settings-side { position: absolute; top: 0; left: 0; width: 760px; height: 1080px; background: var(--bg-panel); padding: 56px 64px; border-right: 1px solid var(--border); }
+  .settings h1 { font-size: 44px; margin-bottom: 40px; }
+  .set-section-title { font-size: 22px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin: 32px 0 14px; }
+  .set-row { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 12px; background: rgba(255,255,255,0.02); }
+  .set-row.focus { background: var(--bg-focus); box-shadow: 0 0 0 3px var(--focus-ring); }
+  .set-row-label { font-size: 26px; }
+  .set-row-sub { font-size: 19px; color: var(--text-muted); margin-top: 4px; }
+  .set-value { font-size: 24px; color: var(--text-secondary); }
+  .pill { padding: 6px 18px; border-radius: 20px; font-size: 20px; }
+  .pill.on { background: var(--success); color: #000; font-weight: 600; }
+  .toggle { width: 64px; height: 34px; border-radius: 17px; background: var(--accent); position: relative; }
+  .toggle::after { content:""; position:absolute; top:4px; right:4px; width:26px; height:26px; border-radius:50%; background:#031; }
+  .btn-accent { background: var(--accent); color:#000; font-weight:600; padding: 14px 30px; border-radius: var(--radius); font-size: 24px; display:inline-block; }
+  .toast { position: absolute; top: 40px; right: 40px; padding: 16px 28px; background: var(--bg-panel); border: 1px solid var(--success); border-radius: var(--radius); font-size: 22px; }
+</style>
+</head>
+<body>
+
+  <!-- ============ 1. LIVE-ANSICHT + INFO-BAR + KANALLISTE ============ -->
+  <div class="label">1 · Live-Ansicht <small>Kanalliste (OK) + Info-Bar mit Now/Next</small></div>
+  <div class="frame">
+    <div class="stage">
+      <div class="video"></div>
+      <div class="live-badge"><span class="live-dot"></span> LIVE · 1080p</div>
+      <div class="clock">20:14</div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="search"><input value="Search channels..." readonly></div>
+        <div class="groups">
+          <span class="group-btn active">All</span>
+          <span class="group-btn">★ Favorites</span>
+          <span class="group-btn">News</span>
+          <span class="group-btn">Sport</span>
+        </div>
+        <div class="chan-list">
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#0a4)">DE</div><div class="chan-info"><div class="chan-name">Das Erste HD</div><div class="chan-now">Tagesschau</div></div><div class="chan-fav">★</div><div class="chan-num">1</div></div>
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#06c)">ZDF</div><div class="chan-info"><div class="chan-name">ZDF HD</div><div class="chan-now">heute journal</div></div><div class="chan-num">2</div></div>
+          <div class="chan focus"><div class="chan-logo" style="background:linear-gradient(135deg,#d51b1b,#7a0d0d)">RTL</div><div class="chan-info"><div class="chan-name">RTL HD</div><div class="chan-now">Bauer sucht Frau</div></div><div class="chan-fav">★</div><div class="chan-num">3</div></div>
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#e60)">P7</div><div class="chan-info"><div class="chan-name">ProSieben HD</div><div class="chan-now">Galileo</div></div><div class="chan-num">4</div></div>
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#5b2a86)">SAT</div><div class="chan-info"><div class="chan-name">SAT.1 HD</div><div class="chan-now">Navy CIS</div></div><div class="chan-num">5</div></div>
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#c0143c)">SKY</div><div class="chan-info"><div class="chan-name">Sky Sport Bundesliga</div><div class="chan-now">Bundesliga: BVB – FCB</div></div><div class="chan-fav">★</div><div class="chan-num">6</div></div>
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#1a8)">ART</div><div class="chan-info"><div class="chan-name">arte HD</div><div class="chan-now">Stadt Land Kunst</div></div><div class="chan-num">7</div></div>
+          <div class="chan"><div class="chan-logo" style="background:linear-gradient(135deg,#444)">N24</div><div class="chan-info"><div class="chan-name">WELT</div><div class="chan-now">Nachrichten</div></div><div class="chan-num">8</div></div>
+        </div>
+      </div>
+
+      <!-- Info-Bar -->
+      <div class="info-bar">
+        <div class="info-logo">RTL</div>
+        <div class="info-content">
+          <div class="info-number">3</div>
+          <div class="info-name">RTL HD</div>
+          <div class="info-programme"><span class="info-label">Now:</span>Bauer sucht Frau<span class="info-time">20:15 – 21:15</span></div>
+          <div class="info-programme"><span class="info-label">Next:</span>RTL Aktuell<span class="info-time">21:15 – 21:45</span></div>
+        </div>
+        <div class="info-progress"><div class="info-progress-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2. EPG ============ -->
+  <div class="label">2 · Programmübersicht <small>EPG (grüne Taste)</small></div>
+  <div class="frame">
+    <div class="stage">
+      <div class="epg">
+        <div class="epg-header">
+          <div class="epg-title">Programme Guide</div>
+          <div class="epg-timeline"><div>Channel</div><div>20:00</div><div>20:30</div><div>21:00</div><div>21:30</div></div>
+        </div>
+        <div class="epg-grid">
+          <div class="epg-row">
+            <div class="epg-chan"><div class="chan-logo" style="background:linear-gradient(135deg,#0a4)">DE</div><div class="epg-chan-name">Das Erste HD</div></div>
+            <div class="epg-prog now"><div class="epg-prog-title">Tagesschau</div><div class="epg-prog-time">20:00 – 20:15</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">Sportschau</div><div class="epg-prog-time">20:15 – 21:00</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">Tatort: Borowski</div><div class="epg-prog-time">21:00 – 22:30</div></div>
+            <div class="epg-prog"></div>
+          </div>
+          <div class="epg-row">
+            <div class="epg-chan"><div class="chan-logo" style="background:linear-gradient(135deg,#06c)">ZDF</div><div class="epg-chan-name">ZDF HD</div></div>
+            <div class="epg-prog now"><div class="epg-prog-title">SOKO Leipzig</div><div class="epg-prog-time">19:25 – 20:15</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">heute journal</div><div class="epg-prog-time">20:15 – 21:45</div></div>
+            <div class="epg-prog"></div>
+            <div class="epg-prog"><div class="epg-prog-title">Markus Lanz</div><div class="epg-prog-time">21:45 – 23:00</div></div>
+          </div>
+          <div class="epg-row">
+            <div class="epg-chan"><div class="chan-logo" style="background:linear-gradient(135deg,#d51b1b,#7a0d0d)">RTL</div><div class="epg-chan-name">RTL HD</div></div>
+            <div class="epg-prog now"><div class="epg-prog-title">Bauer sucht Frau</div><div class="epg-prog-time">20:15 – 21:15</div></div>
+            <div class="epg-prog"></div>
+            <div class="epg-prog"><div class="epg-prog-title">RTL Aktuell</div><div class="epg-prog-time">21:15 – 21:45</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">Stern TV</div><div class="epg-prog-time">21:45 – 23:00</div></div>
+          </div>
+          <div class="epg-row">
+            <div class="epg-chan"><div class="chan-logo" style="background:linear-gradient(135deg,#c0143c)">SKY</div><div class="epg-chan-name">Sky Sport BL</div></div>
+            <div class="epg-prog now"><div class="epg-prog-title">Bundesliga: BVB – FC Bayern</div><div class="epg-prog-time">18:30 – 20:30</div></div>
+            <div class="epg-prog"></div>
+            <div class="epg-prog"><div class="epg-prog-title">Topspiel-Analyse</div><div class="epg-prog-time">20:30 – 21:30</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">Sky90</div><div class="epg-prog-time">21:30 – 23:00</div></div>
+          </div>
+          <div class="epg-row">
+            <div class="epg-chan"><div class="chan-logo" style="background:linear-gradient(135deg,#1a8)">ART</div><div class="epg-chan-name">arte HD</div></div>
+            <div class="epg-prog now"><div class="epg-prog-title">Stadt Land Kunst</div><div class="epg-prog-time">19:40 – 20:15</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">Re: Reportage</div><div class="epg-prog-time">20:15 – 21:05</div></div>
+            <div class="epg-prog"><div class="epg-prog-title">Doku: Die Alpen</div><div class="epg-prog-time">21:05 – 22:35</div></div>
+            <div class="epg-prog"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3. SETTINGS / PLAYLIST ============ -->
+  <div class="label">3 · Einstellungen <small>Playlists &amp; EPG verwalten (blaue Taste)</small></div>
+  <div class="frame">
+    <div class="stage">
+      <div class="settings">
+        <div class="video" style="opacity:0.5"></div>
+        <div class="toast">✓ Playlist „Mein IPTV" aktualisiert · 247 Kanäle</div>
+        <div class="settings-side">
+          <h1>Settings</h1>
+
+          <div class="set-section-title">Playlists</div>
+          <div class="set-row focus">
+            <div><div class="set-row-label">Mein IPTV</div><div class="set-row-sub">247 Kanäle · EPG verbunden</div></div>
+            <span class="pill on">Aktiv</span>
+          </div>
+          <div class="set-row">
+            <div><div class="set-row-label">Sport-Paket</div><div class="set-row-sub">38 Kanäle</div></div>
+            <span class="set-value">›</span>
+          </div>
+          <div class="set-row">
+            <div><div class="set-row-label">＋ Playlist hinzufügen</div><div class="set-row-sub">M3U / M3U8 URL eingeben</div></div>
+          </div>
+
+          <div class="set-section-title">Wiedergabe</div>
+          <div class="set-row">
+            <div><div class="set-row-label">Beim Start letzten Kanal öffnen</div></div>
+            <div class="toggle"></div>
+          </div>
+          <div class="set-row">
+            <div><div class="set-row-label">Puffergröße</div><div class="set-row-sub">Stabilität bei langsamem Netz</div></div>
+            <span class="set-value">Auto ›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 4. DIREKTE KANALNUMMER ============ -->
+  <div class="label">4 · Direkteingabe <small>Zifferntasten 0–9</small></div>
+  <div class="frame">
+    <div class="stage">
+      <div class="video"></div>
+      <div class="live-badge"><span class="live-dot"></span> LIVE · 1080p</div>
+      <div style="position:absolute; top:40px; right:40px; padding:24px 40px; background:var(--bg-panel); border-radius:8px; text-align:center;">
+        <div style="font-size:72px; font-weight:bold; color:var(--accent-bright); letter-spacing:8px; min-width:200px;">12_</div>
+        <div style="font-size:22px; color:var(--text-secondary); margin-top:8px;">Sky Cinema HD</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

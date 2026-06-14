@@ -1,0 +1,9 @@
+{
+  // VS Code schlägt diese Erweiterungen beim Öffnen des Projekts vor.
+  "recommendations": [
+    // Offizielle LG-Erweiterung: TV verbinden, App installieren, Emulator & Debugger.
+    "webOSSDK.webosstudio",
+    // Bun-Runtime-Unterstützung (Debugger, Test-Runner) für die Build-Skripte.
+    "oven.bun-vscode"
+  ]
+}

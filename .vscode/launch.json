@@ -1,0 +1,29 @@
+{
+  // F5 baut, paketiert und überträgt die App auf den TV.
+  // Voraussetzung: Gerät ist registriert (siehe README → "Mit VS Code auf den TV übertragen").
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Deploy to TV",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bun run deploy ${input:device}",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Deploy + DevTools (Inspect)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bun run dev ${input:device}",
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "device",
+      "type": "promptString",
+      "description": "Name des registrierten webOS-Geräts",
+      "default": "lgtv"
+    }
+  ]
+}

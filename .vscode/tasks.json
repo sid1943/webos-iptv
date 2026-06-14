@@ -1,0 +1,77 @@
+{
+  // Mit diesen Tasks überträgst du die App direkt aus VS Code auf den LG-TV.
+  // Öffnen mit: Befehlspalette (Cmd/Ctrl+Shift+P) → "Tasks: Run Task"
+  // Schnell deployen: Cmd/Ctrl+Shift+B (Standard-Build-Task = Deploy to TV)
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "webOS: Setup TV (Discover + Deploy)",
+      "detail": "Findet den TV, aktiviert Dev-Mode, baut, paketiert und installiert die App.",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "setup", "${input:tvIp}"],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "webOS: Deploy to TV",
+      "detail": "Baut, paketiert und installiert die App auf dem registrierten Gerät, dann startet sie.",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "deploy", "${input:device}"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "webOS: Deploy + DevTools (Inspect)",
+      "detail": "Wie Deploy, öffnet danach den Chrome-DevTools-Inspector für die laufende App.",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "dev", "${input:device}"],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "webOS: Build",
+      "detail": "Bündelt die webOS-App nach dist/webos-app.",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "build"],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "webOS: Package (.ipk)",
+      "detail": "Erstellt das .ipk-Paket nach dist/.",
+      "type": "shell",
+      "command": "bun",
+      "args": ["run", "package"],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "webOS: List Devices",
+      "detail": "Zeigt die bei den ares-Tools registrierten TV-Geräte.",
+      "type": "shell",
+      "command": "ares-setup-device",
+      "args": ["-l"],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "device",
+      "type": "promptString",
+      "description": "Name des registrierten webOS-Geräts (siehe 'webOS: List Devices')",
+      "default": "lgtv"
+    },
+    {
+      "id": "tvIp",
+      "type": "promptString",
+      "description": "IP-Adresse des TVs (leer lassen für automatische Suche im Netzwerk)",
+      "default": ""
+    }
+  ]
+}
